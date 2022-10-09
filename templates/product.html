@@ -1,0 +1,481 @@
+{% extends "dashboard.html" %}
+{% block content %}
+<input id="search-box" style="position: relative; top: 20px; width: 50%; left: 30%;" type="text" class="form-control" placeholder="enter product name" aria-label="Username" aria-describedby="basic-addon1">
+<div id="card" style="margin-top: 90px;">
+<h1 style="text-align: center; "><b>Product view</b></h1>
+
+{%for i in range(0,data|length)%}
+   
+   <div class="card container" style="margin-top: 60px; position:relative;">
+  
+    <div class="card-body container-fluid">
+        <img src='{{data[i]["p_img"]}}' alt="" width="200" height="200" class="img-thumbnail" style="float: left; ">
+    <div style="display: inline;">
+    <div class="display-6" style=" padding-left: 25%; font-size: 2rem;">Product name: {{data[i]["p_name"]}}</div>
+        <br> <br>
+    <div class="display-6" style=" padding-left: 25%; font-size: 1.6rem;">Selling price {{data[i]["p_price"]}}</div>
+        <br> <br>
+    <div class="display-6 " style=" padding-left: 25%; font-size: 1.3rem;">per {{data[i]["p_quantity"]}} </div>
+    </div>
+    <br> <br>
+    <div style="padding-left: 20px; float: right;">
+        <button id='{{data[i]["p_id"]}}' id="edit_product_button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemform" onclick="edit_product(this)">
+            edit product
+          </button>
+        <button id='{{data[i]["p_id"]}}' class="btn btn-danger" onclick="delete_product(this)">Delete Product</button>
+    </div>
+    </div>  
+    
+    
+    </div>
+    <br>
+  
+   
+    {%endfor%}
+  </div>
+  <br>
+    
+     
+    <script>
+         
+        $(()=>{
+
+
+
+          
+
+             $("#search-box").on("input",(ev)=>{
+                var p_name= $(ev.currentTarget).val();
+               $.ajax({
+                url : 'http://127.0.0.1:5000/BataBhai12345/search_product',
+                type : 'POST',
+                data : {p_name:p_name},
+                
+                success : function(response){
+                    if (response=="false"){
+                      $('#card').html('<div  style="position: relative; top: 20px; width: 50%; left: 30%;" class="alert alert-danger" role="alert" >sorry no result found</div>')
+                        return;
+                    }
+                    response= JSON.parse(response);
+                    var html="";
+                    response.map(function(i){
+                        html+='<div class="card container" style="margin-top: 60px; position:relative;"><div class="card-body container-fluid"><img src='+i.p_img+' alt="" width="200" height="200" class="img-thumbnail" style="float: left; "><div style="display: inline;"><span class="display-6" style="padding-left: 10%; font-size: 2rem;">'+i.p_name+'</span><br> <br><span class="display-6" style="padding-left: 10%; font-size: 1.6rem;">selling price'+i.p_price+'</span><br> <br><span class="display-6 " style="padding-left: 10%; font-size: 1.3rem;"></span>'+i.p_quantity+' </span></div><br> <br><div style="padding-left: 20px; float: right;"><button id='+i.p_id+' id="edit_product_button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemform" onclick="edit_product(this)">edit product</button>  <button id='+i.p_id+' class="btn btn-primary" onclick="delete_product(this)">Delete Product</button></div></div>   </div><br>'
+                    });
+                    $('#card').html(html);
+                    },
+                });
+             });
+             
+            $("#flash_message").hide();
+            var action="ssd";
+            $('#add_item').click(function(ev){
+                clean_up();
+                $("#action").attr('class','add');
+            });
+        });
+
+
+        const clean_up=()=>{
+            $("#flash_message").hide();
+            var p_name_al=$('#p_name_al')
+            var p_quantity_al=$('#p_quantity_al')
+            var p_price_al=$("#p_price_al")
+            var p_catagory_al=$('#p_catagory_al')
+            var p_unit_al=$("#p_unit_al")
+            var p_img_al=$('#p_img_al')
+
+            $("#action").attr('class','');
+            p_quantity_al.hide();
+            p_unit_al.hide();
+            p_name_al.hide();
+            p_img_al.hide()
+            p_catagory_al.hide();
+            p_price_al.hide();
+            $('#add_item').click(function(){
+                var p_name=$('#p_name').val("")
+            var p_quantity=$('#p_quantity').val("")
+            var p_price=$("#p_price").val("")
+            var p_catagory=$('#p_catagory').val('0')
+            var p_unit=$("#p_unit").val("")
+            var p_img=$("#p_img").val("")
+            });
+            
+        }
+        const hide_alert=()=>{
+            var p_name_al=$('#p_name_al')
+            var p_quantity_al=$('#p_quantity_al')
+            var p_price_al=$("#p_price_al")
+            var p_catagory_al=$('#p_catagory_al')
+            var p_unit_al=$("#p_unit_al")
+            var p_img_al=$('#p_img_al')
+            p_quantity_al.hide();
+            p_unit_al.hide();
+            p_name_al.hide();
+            p_catagory_al.hide();
+            p_price_al.hide();
+            p_img_al.hide()
+        }
+        
+          function edit_product(params){
+            $("#flash_message").hide();
+                hide_alert();
+                var p_data=0;
+                $("#action").attr('class','edit'+' '+params.id);
+               
+                $.ajax({
+                url : 'http://127.0.0.1:5000/BataBhai12345/get_product_detail',
+                type : 'POST',
+                data : {p_id:params.id},
+                success : function(response){
+                    data=JSON.parse(response);
+                    data.map((i)=>{
+                        $('#p_name').val(i.p_name);
+                        $('#p_quantity').val(parseInt(i.p_quantity));
+                        $("#p_price").val(parseInt(i.p_price));
+                        $('#p_catagory').val(String(i.c_id)).change();
+                        i.p_quantity=String(i.p_quantity);
+                        $("#p_unit").val(i.p_quantity.replace(/[0-9]/g,'').trim());
+                        $('#p_img').val(i.p_img)
+                    });
+                    
+                    },
+                });
+          
+        }
+        
+        function add_product(params){
+            hide_alert();
+            var is_errror=false;
+            var p_name=($('#p_name').val()).trim();
+            var p_quantity=$('#p_quantity').val().trim();
+            var p_price=$("#p_price").val().trim();
+            var p_catagory=$('#p_catagory').val().trim();
+            var p_unit=$("#p_unit").val().trim();
+            var p_img=$("#p_img").val()
+
+            var p_name_al=$('#p_name_al')
+            var p_quantity_al=$('#p_quantity_al')
+            var p_price_al=$("#p_price_al")
+            var p_catagory_al=$('#p_catagory_al')
+            var p_unit_al=$("#p_unit_al")
+            var p_img_al=$("#p_img_al")
+
+            //code to ckeck the action and corresponding file
+            
+            if(p_name==""){
+                is_errror=true
+                p_name_al.show(1000);
+                p_name_al.text("required field")
+            }
+            if(p_quantity==""){
+                is_errror=true
+                p_quantity_al.show(1000);
+                p_quantity_al.text("required field")
+            }
+            if(p_unit==""){
+                is_errror=true
+                p_unit_al.show(1000);
+                p_unit_al.text("required field")
+            }
+            if(p_catagory=="0"){
+                is_errror=true
+                p_catagory_al.show(1000);
+                p_catagory_al.text("please choose category")
+            }
+            if(p_price==""){
+                is_errror=true
+                p_price_al.show(1000);
+                p_price_al.text("required field")
+            }
+           
+            if((/^\d+$/.test(p_price))==false || parseInt(p_price)<=0){
+                is_errror=true
+                p_price_al.show(1000);
+                p_price_al.text("please enter valid positive selling price")
+            }
+            if((/^\d+$/.test(p_quantity))==false || parseInt(p_quantity)<=0){
+                is_errror=true
+                p_quantity_al.show(1000);
+                p_quantity_al.text("please enter valid positive quantity")
+            }
+            if(p_name.length>=20){
+                is_errror=true
+                p_name_al.show(1000);
+                p_name_al.text("product name should be less than 20")
+            }
+            if(p_quantity.length>10){
+                is_errror=true
+                p_quantity_al.show(1000);
+                p_quantity_al.text("quantity should be less than 10")
+            }
+            if(p_unit.length>10){
+                is_errror=true
+                p_unit_al.show(1000);
+                p_unit_al.text("product unit length should be less than 10")
+            }
+            
+            if(p_price.length>10){
+                is_errror=true
+                p_price_al.show(1000);
+                p_price_al.text("price should be less then 1000000000")
+            }
+            
+            
+            if(is_errror){
+            return;
+            alert("ther is error")
+            }
+            var data= $('#uploader')[0].files[0]
+            if(data!=undefined){
+              file_name=data.name
+              filename=file_name.split(" ").join('_')
+              p_img='http://127.0.0.1:5000/static/images/product/'+filename
+            }
+            if(data!=undefined)
+            {
+            var formData = new FormData();
+            formData.append('section', 'general');
+            formData.append('action', 'previewImg');
+            formData.append('file',$('#uploader')[0].files[0]);
+            $.ajax(
+                {
+                    url:"http://127.0.0.1:5000/BataBhai12345/image_upload/category",
+                    type:'POST',
+                    data:formData,
+                    contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+                    processData: false, // NEEDED, DON'T OMIT THIS
+                    cache:false
+                }
+            ).done(function(response){
+              var action= $("#action").attr('class');
+            p_id='0';
+            if (action!='add')
+            {
+                res=action.split(" ");
+                action=res[0];
+                p_id=res[1];
+            }
+            
+            p_name=String(p_name)
+            p_price=String(p_price)
+            p_quantity=String(p_quantity)
+            p_catagory=String(p_catagory)
+            p_unit=String(p_unit)
+            p_quantity=p_quantity+" "+p_unit;
+           //here we have to vhange it we have sojme issues
+            var p_description="not avilable";
+            
+          
+                $.ajax({
+                url : 'http://127.0.0.1:5000/BataBhai12345/productadd',
+                type : 'POST',
+                data : {action:action,p_name:p_name,p_price:p_price,p_img:p_img,p_description:p_description,c_id:p_catagory,p_quantity:p_quantity,p_id:p_id},
+                success : function(response){
+                    if(action=="add")
+                    {
+                        $("#flash_message").text("record added successfully")
+                        $("#flash_message").show(1000);
+                        window.location.replace('http://127.0.0.1:5000/BataBhai12345/product');
+
+                    }
+                    else{
+                        $("#flash_message").text("record updated successfully")
+                        $("#flash_message").show(1000);
+                        window.location.replace('http://127.0.0.1:5000/BataBhai12345/product');
+                    }
+                   
+                },
+                } );
+
+              
+             }).fail(function(err){
+                alert("fail");
+            });
+          
+            }
+            else{
+            var action= $("#action").attr('class');
+            p_id='0';
+            if (action!='add')
+            {
+                res=action.split(" ");
+                action=res[0];
+                p_id=res[1];
+            }
+            
+            p_name=String(p_name)
+            p_price=String(p_price)
+            p_quantity=String(p_quantity)
+            p_catagory=String(p_catagory)
+            p_unit=String(p_unit)
+            p_quantity=p_quantity+" "+p_unit;
+           //here we have to vhange it we have sojme issues
+            var p_description="not avilable";
+            
+          
+                $.ajax({
+                url : 'http://127.0.0.1:5000/BataBhai12345/productadd',
+                type : 'POST',
+                data : {action:action,p_name:p_name,p_price:p_price,p_img:p_img,p_description:p_description,c_id:p_catagory,p_quantity:p_quantity,p_id:p_id},
+                success : function(response){
+                    if(action=="add")
+                    {
+                        $("#flash_message").text("record added successfully")
+                        $("#flash_message").show(1000);
+                        window.location.replace('http://127.0.0.1:5000/BataBhai12345/product');
+
+                    }
+                    else{
+                        $("#flash_message").text("record updated successfully")
+                        $("#flash_message").show(1000);
+                        window.location.replace('http://127.0.0.1:5000/BataBhai12345/product');
+                    }
+                   
+                },
+                } );
+                
+                
+        }
+      }
+      
+        
+          function delete_product(params){
+             $.ajax({
+               url:"http://157.245.254.168:5000/BataBhai12345/delete_product",
+               type:"POST",
+               data:{p_id:params.id},
+               success:function(response){
+                alert(response)
+                window.location.replace('http://127.0.0.1:5000/BataBhai12345/product');
+               },
+               error:function(){
+                alert("some error occured");
+               }
+             });
+          }
+        /*
+        $(()=>{
+
+
+        const push_data=(p_data)=>{
+            
+        }
+        var p_data=0;
+        $.ajax({
+        url : '/get_product_detail',
+        type : 'POST',
+        data : {p_id:""},
+        success : function(response){
+            push_data(response)
+            
+            },
+        });
+        
+});*/
+
+
+
+    </script>
+
+
+
+<form>
+  <button id="add_item" type="button" style="position: fixed; bottom: 20px; left: 50%;" class="btn btn-warning" data-toggle="modal" data-target="#itemform">
+    Add product
+  </button>
+  <div id="action" class="">
+ <!--most important line never ever delete this code-->
+  </div>
+  
+  <div class="modal fade" id="itemform" tabindex="-1" role="dialog" aria-labelledby="Title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="Title">Add Product</h5>
+          
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div id="flash_message" class="alert alert-success" role="alert" ></div>
+        </div>
+        <div class="modal-body">
+      
+          
+          <div class="form-row">
+              <div class="form-group col-md-12">
+               <input id="uploader" type="file"></input>
+              
+                <input style="display: none;" id="p_img" type="text">
+                <div id="p_img_al" class="alert alert-danger" role="alert" >
+         
+                </div>
+              </div>
+              </div>
+              
+    
+     <div class="form-row">
+      <div class="form-group col-md-12">
+      <label for="product name">product name</label>
+      <input type="text" class="form-control" id="p_name"  required >
+      <div id="p_name_al" class="alert alert-danger" role="alert" >
+         
+        </div>
+    </div> </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+      <label for="inputState">product category</label>
+        <select   id="p_catagory" class="form-control">
+          <option value="0">Choose</option>
+          {%for i in range(0,data2|length)%}
+          <option value='{{data2[i][0]}}'>{{data2[i][1]}}</option>
+          {%endfor%}
+        </select>
+        <div id="p_catagory_al" class="alert alert-danger" role="alert" >
+         
+      </div>
+    </div></div>
+  
+    <div class="form-row">
+            <div class="form-group col-md-6">
+        <label for="inputPassword4">selling price</label>
+        <input type="text" class="form-control" id="p_price" placeholder="selling price">
+        <div id="p_price_al" class="alert alert-danger" role="alert" >
+         
+      </div>
+      </div>
+    </div>
+   <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="quantity">quantity</label>
+        <input type="text" class="form-control" id="p_quantity" placeholder="quantity">
+        <div id="p_quantity_al" class="alert alert-danger" role="alert" >
+         
+      </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="unit">unit</label>
+        <input type="text" class="form-control" id="p_unit" placeholder="unit">
+        <div id="p_unit_al" class="alert alert-danger" role="alert" >
+         
+      </div>
+      </div>
+    </div>
+         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button  onclick="add_product(this)" id="add_product_button"type="button" class="btn btn-primary">Add item</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </html>
+  </form>
+
+  
+  
+  <!-- Modal -->
+ 
+<!--form part-->
+
+{% endblock %}
+

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pankaj stores</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+ <!-- Google Fonts -->
+ <link href="https://fonts.googleapis.com/css?family=Montserrat:900|Ubuntu&display=swap" rel="stylesheet">
+ 
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/3ea53c1d6b.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  
+  
+  <script src="http://127.0.0.1:5000/static/js/add_update_cart.js"></script>
+  <script src="http://127.0.0.1:5000/static/js/header.js"></script>
+ <style>
+   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+   #footer{
+  padding: 7% 7%;
+  text-align: center;
+  background-color: black;
+}
+.social-icon
+{
+  margin:4% 2%;
+  color: aliceblue;
+}
+
+
+::selection{
+  color: #fff;
+  background: #664AFF;
+}
+
+.wrapper{
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+  align-content: center;
+}
+
+.wrapper .search-input{
+  background: #fff;
+  width: 70%;
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.12);
+}
+
+.search-input input{
+  height: 55px;
+  width:  100%;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 0 60px 0 20px;
+  font-size: 18px;
+  box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
+}
+
+.search-input.active input{
+  border-radius: 5px 5px 0 0;
+}
+
+.search-input .autocom-box{
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.search-input.active .autocom-box{
+  padding: 10px 8px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.autocom-box li{
+  list-style: none;
+  padding: 8px 12px;
+  display: none;
+  width: 100%;
+  cursor: default;
+  border-radius: 3px;
+}
+
+.search-input.active .autocom-box li{
+  display: block;
+}
+.autocom-box li:hover{
+  background: #efefef;
+}
+
+.search-input .icon{
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 55px;
+  width: 55px;
+  text-align: center;
+  line-height: 55px;
+  font-size: 20px;
+  color: #644bff;
+  cursor: pointer;
+}
+ </style>
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
+        <div class="container-fluid">
+          <a style="font-size: large;" class="navbar-brand">
+            Pankaj Stores </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/all_product">Products</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/category"  role="button" aria-expanded="false">
+                  Categories
+                </a>
+                
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/user_account_orders">My orders</a>
+              </li>
+              <li class="nav-item">
+               
+              </li>
+             
+            </ul>
+           
+            <a class="nav-link" href="/bag"><img style="width:40px;height:40px;" src="http://127.0.0.1:5000/static/cart.png"></a>
+              <a href="/login"><button class="btn btn-outline-success" >login/signup</button></a>
+              
+          
+
+          </div>
+        </div>
+      </nav>
+      <div class="wrapper">
+        <div class="search-input">
+          <a href="" target="_blank" hidden></a>
+          <input type="text" placeholder="Type to search Products..">
+          <div style=" background-color: white ; " class="autocom-box">
+            <!-- here list are inserted from javascript -->
+          </div>
+          <div class="icon"><i class="fas fa-search"></i></div>
+        </div>
+      </div>
+      <section style="padding-bottom: 40px;">
+        
+        {% block content %}
+        {% endblock %}
+      </section>
+      <footer class="white-section" id="footer">
+        <div class="container-fluid">
+         <h2 style="color: white;">Pankaj kirana stores</h2>
+          <p style="color: white;" >101,jhangirpur Rd,jhangirpur,madhya pradesh</p>
+          <br>
+          <p style="color: white;">pin:456337</p>
+          <br>
+          <p style="color: white;">Mobile number:+91 7067866666</p>
+        </div>
+        <div class="container-fluid">
+          <i class="social-icon fab fa-twitter"></i>
+          <i class="social-icon fab fa-facebook-f"></i>
+          <i class="social-icon fab fa-instagram"></i>
+          <i class="social-icon fas fa-envelope"></i>
+          <p style="color: white;" >Made with &#9829 in Ujjain</p>
+        </div>
+      </footer>
+    
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+  </body>
+  </html>
+  <script>
+
+  </script>
+  

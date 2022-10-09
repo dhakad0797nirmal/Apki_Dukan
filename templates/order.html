@@ -1,0 +1,87 @@
+{% extends "dashboard.html" %}
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Orders</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active"  style="margin-left: 10px;">
+            <a class="nav-link" href="http://127.0.0.1:5000/BataBhai12345/order" style="font-size: 15px;border: 2px solid black;border-radius: 20px;  padding-left: 20px;padding-right: 20px;">All<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active"  style="margin-left: 10px;">
+            <a class="nav-link" href="http://127.0.0.1:5000/BataBhai12345/order/pending"style="font-size: 15px;border: 2px solid black;border-radius: 20px;  padding-left: 20px;padding-right: 20px;">Pending<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active"  >
+            <li class="nav-item active" style="margin-left: 10px;">
+            <a class="nav-link" href="http://127.0.0.1:5000/BataBhai12345/order/accepted"style="font-size: 15px;border: 2px solid black;border-radius: 20px;  padding-left: 20px;padding-right: 20px;">Accepted<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active"style="margin-left: 10px;">
+            <a class="nav-link" href="http://127.0.0.1:5000/BataBhai12345/order/rejected"style="font-size: 15px;border: 2px solid black;border-radius: 20px;  padding-left: 20px;padding-right: 20px;">Rejected<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active"style="margin-left: 10px;">
+            <a class="nav-link" href="http://127.0.0.1:5000/BataBhai12345/order/shipped"style="font-size: 15px;border: 2px solid black;border-radius: 20px;  padding-left: 20px;padding-right: 20px;">Shipped<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active"style="margin-left: 10px;">
+            <a class="nav-link" href="http://127.0.0.1:5000/BataBhai12345/order/cancelled"style="font-size: 15px;border: 2px solid black;border-radius: 20px;  padding-left: 20px;padding-right: 20px;">Cancelled<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active" style="margin-left: 10px;">
+            <a class="nav-link" href="http://127.0.0.1:5000/BataBhai12345/order/delivered"style="font-size: 15px;border: 2px solid black;border-radius: 20px;  padding-left: 20px;padding-right: 20px;">Delivered<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active" style="margin-left: 10px;">
+            <a class="nav-link" href="http://127.0.0.1:5000/BataBhai12345/order/failed"style="font-size: 15px;border: 2px solid black;border-radius: 20px;  padding-left: 20px;padding-right: 20px;">Failed<span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    
+    </nav>
+    <input id="searchbox" class="form-control me-2" type="text" style="width: 50%; margin-left: 25%;" placeholder="Search by OrderID">
+    <div id="is_present">
+    {%for i in range(0,data|length)%}
+    <div id="{{data[i]['o_id']}}" class="card" style="position: relative; width: 60%; left:22%; margin-top: 20px; align-self: center;">
+        <div class="card-body">
+        <span style="display: inline;"> <span ></span>Order Id</span> <span class="font-weight-bold" style="margin-left: 10px;">#{{data[i]['o_id']}}</span>  <div  style="position: relative;  left: 30%;" disabled class="btn bg-warning text-dark">{{data[i]['o_date']}}</div></span>
+        <br><br>
+        <img src='{{data[i]["p_img"]}}' width="100px" height=100px">
+        
+        <span style="display: inline;"> <p class="badge bg-dark" style="display: inline; margin-left: 20px;">{{data[i]['total_item']}} items</p><p class="badge bg-dark" style="display: inline; margin-left: 25px;"> total cost &#8377; {{data[i]['total_cost']}} </p></span>
+        <hr>
+        <p style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: bolder; font-size: x-large;" class=".text-danger">{{data[i]['o_status']}}</p> 
+        <a href="http://127.0.0.1:5000/BataBhai12345/order/fetch_order/{{data[i]['o_id']}}" class="btn btn-primary" style="width: 150px; float: inline-end;">Details ></a>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+    <script>
+        $(()=>{
+            if($('#is_present').html().trim()==""){
+               
+                $('#is_present').html(' <div style="position: relative; width: 60%; left:15%; margin-top: 60px; align-self: center;" id="c_description_al" class="alert alert-danger" role="alert" >no data found</div>  </div>')
+            }
+            $("#searchbox").on("input",function(){
+        var searchwhat=$(this).val();
+        $(".card").each(function(){
+          var curr_id1=$(this).attr('id');
+          var curr_id=String(curr_id1);
+          console.log(curr_id);
+          if(curr_id.includes(searchwhat))
+          {
+            
+            $(this).show(1000);
+          }
+          else
+          {
+            $(this).hide()
+          }
+        });
+      });
+    
+        })
+        
+      
+       
+      
+    
+        </script>
+{% endblock %}

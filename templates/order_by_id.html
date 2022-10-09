@@ -1,0 +1,341 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-responsive.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+   <style type="text/css">
+   
+
+ body {
+    background:white;
+    min-height: 100%;
+    vertical-align: middle;
+    display: flex;
+    font-family: sans-serif;
+    font-size:1.5rem;
+    font-weight: bold
+}
+
+.title {
+    margin-bottom: 5vh
+}
+
+.card {
+    margin: auto;
+    max-width:1300px;
+    width:100%;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 1rem;
+    border: transparent
+}
+
+@media(max-width:767px) {
+    .card {
+        margin: 3vh auto
+    }
+}
+
+.cart {
+    background-color:white;
+    padding: 4vh 5vh;
+    border-bottom-left-radius: 1rem;
+    border-top-left-radius: 1rem;
+    width:100%;
+}
+
+@media(max-width:767px) {
+    .cart {
+        padding: 4vh;
+        border-bottom-left-radius: unset;
+        border-top-right-radius: 1rem
+    }
+}
+
+.summary {
+    background-color:white;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    padding: 4vh;
+    width:100%;
+    color: rgb(65, 65, 65);
+}
+
+
+
+.summary .col-2 {
+    padding: 0
+}
+
+.summary .col-10 {
+    padding: 0
+}
+
+.row {
+    margin: 0
+}
+
+.title b {
+    font-size: 1.5rem
+}
+
+.main {
+    margin: 0;
+    padding: 2vh 0;
+    width: 100%
+}
+
+.col-2,
+.col {
+    padding: 0 1vh
+}
+
+a {
+    padding: 0 1vh
+}
+
+.close {
+    margin-left: auto;
+    font-size: 0.7rem
+}
+.extra {
+    color:blue;
+}
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+img {
+    width: 3.5rem
+}
+
+
+h5 {
+    margin-top: 4vh
+}
+
+hr {
+    margin-top: 1.25rem
+}
+
+form {
+    padding: 2vh 0
+}
+
+select {
+    border: 1px solid rgba(0, 0, 0, 0.137);
+    padding: 1.5vh 1vh;
+    margin-bottom: 4vh;
+    outline: none;
+    width: 100%;
+    background-color: rgb(247, 247, 247)
+}
+
+input {
+    border: 1px solid rgba(0, 0, 0, 0.137);
+    padding: 1vh;
+    margin-bottom: 4vh;
+    outline: none;
+    width: 100%;
+    background-color: rgb(247, 247, 247)
+}
+
+input:focus::-webkit-input-placeholder {
+    color: transparent
+}
+
+
+
+
+</style>
+</head>
+<script>
+    $(()=>{
+
+        $(window).on('pushstate', function(event) {
+    alert("push");
+    console.log("df")
+});
+
+        var status=$("#status").html().toLocaleLowerCase()
+        var o_id=$("#order_id").html().replace(/^\D+/g,'');
+        
+        //$("#p_name").show()
+        //alert($("#p_name_al").attr('class'))
+        $("#p_name_al").hide();
+        if( status=="pending"){
+           
+            $("#button_placer").html('<span><button type="button" id="accept" class="btn btn-success btn-sm">accept item</button></span><span>   <button type="button" id="reject" class="btn btn-danger btn-sm">Reject</button></span>')
+            
+            $("#accept").click(function(){
+                $("#p_name_al").html("<b>the item is being accepted</b>")
+                $("#p_name_al").attr('class','alert alert-success')
+                $("#p_name_al").show(100)
+                update_o_status("accepted",String(o_id))
+            });
+            $("#reject").click(function(){
+                $("#p_name_al").show(100)
+                $("#p_name_al").html("<b>the item is being rejected</b>")
+                update_o_status("rejected",String(o_id))
+            });
+        }
+        if(status=="shipped"){
+            $("#button_placer").html('<span><button type="button" id="delivered" class="btn btn-primary btn-sm"> delivered</button></span><span>   <button type="button" id="failed" class="btn btn-danger btn-sm">Failed</button></span>')
+            $("#delivered").click(function(){
+                $("#p_name_al").html("<b>the item is being delivered<b>")
+                $("#p_name_al").attr('class','alert alert-success')
+                $("#p_name_al").show(100)
+               
+                update_o_status("delivered",String(o_id))
+            });   
+            $("#failed").click(function(){
+                $("#p_name_al").show(100)
+                $("#p_name_al").html("<b>the item is being failed</b>")
+                update_o_status("failed",String(o_id))
+            });
+        }
+        if(status=="accepted"){
+            $("#button_placer").html('<span><button type="button" id="shipped" class="btn btn-primary btn-sm"> Shipped</button></span><span>   <button type="button" id="cancelled" class="btn btn-danger btn-sm">Cancelled</button></span>')
+            $("#shipped").click(function(){
+                $("#p_name_al").html("<b>the item is being shipped<b>")
+                $("#p_name_al").attr('class','alert alert-success')
+                $("#p_name_al").show(100)
+                
+                update_o_status("shipped",String(o_id))
+            });
+            $("#cancelled").click(function(){
+                $("#p_name_al").show(100)
+                $("#p_name_al").html("<b>the item is being cancelled</b>")
+                
+                update_o_status("cancelled",String(o_id))
+            });
+        }
+        function update_o_status(status,o_id)
+        {
+            $.ajax({
+                url:"http://127.0.0.1:5000/BataBhai12345/update_order_id_admin",
+                type:"POST",
+                data:{o_id:o_id,o_status:status},
+                success:function(response){
+                    $("#p_name_al").hide(1000);
+                    window.location.replace('http://127.0.0.1:5000/BataBhai12345/order/fetch_order/'+o_id)
+                   
+                }
+            });
+        }
+
+    });
+</script>
+<body>
+    <div class="card">
+                   
+                     <div class="row">
+        <div class="col-md-4 cart">
+            <h3 style="text-align: center;"><b id="order_id">Order id:#{{data['o_id']}}</b></h3>
+            <div>
+                <h3><b>item list</b></h3>
+            </div>
+            {%for i in range(0,data['item_list']|length)%}
+            <hr>
+            
+                    
+                     <div class="row">
+                          
+                           <div class="col">
+                            
+                           <div class="form-group col-md-2"> 
+                                <div class="col-2"><img class="img-fluid" src='{{data["item_list"][i]["p_img"]}}' style="width: 100px; height: 100px;"></div>
+                           </div>
+                           </div>
+                           <div class="col">
+                            <div class="form-group col-md-2"> 
+                            <div class="row text-muted">product Price per {{data["item_list"][i]["p_quantity"]}}</div>
+                            <div class="row">&#8377; {{data["item_list"][i]["p_price"]}}</div>
+                            </div>
+                    </div>                   
+                           <div class="col">
+                                   <div class="form-group col-md-2"> 
+                                   <div class="row text-muted">quantity</div>
+                                   <div class="row">{{data["item_list"][i]["p_size"]}}</div>
+                                   </div>
+                           </div>
+    
+                           <div class="col">
+                                   <div class="form-group col-md-2"> 
+                                   <div class="row text-muted">Price</div>
+                                   <div class="row">&#8377; {{data["item_list"][i]["total_price"]}}</div>
+                                   </div>
+                           </div>
+                            
+
+                           <div class="col">
+                            <div class="form-group col-md-2"> 
+                            <div class="row text-muted">Product Name</div>
+                            <div class="row">{{data["item_list"][i]["p_name"]}}</div>
+                            </div>
+                    </div>
+                          </div>
+                      <hr>
+                {%endfor%}
+        <div class="row">
+                        <div class="col summary">
+                          <h3><b>Summary</b></h3	>
+                        </div>
+                 <div class="row">
+    <div class="col">
+    <label for= "total">total price : </label>
+    &#8377;<span id="total">{{data["total_cost"]}}</span><br>
+    <label for= "status">Order Status : </label>
+    <span id="status">{{data["o_status"]}}</span><br>
+
+  </div>
+    
+        </div>
+     <hr>
+        <div class="row">
+                
+                      <div class="col summary">
+                          <h3><b>Address</b></h3>
+                        </div>
+                  
+                <hr>
+ <div class="row extra">
+    <div class="col">
+    <label for= "name">Customer name : </label>
+    <span id="Name : ">{{data["u_name"]}}</span>
+  </div>
+  	 
+
+       <div class="col">
+      <label for="Address">Address:</label>
+      <span id="makan no."> {{data["u_address"]}}</span><br>
+      <label for="city">city : </label>
+    <span id="city">{{data["u_city"]}}</span><br>
+    
+      <label for="pin">pin : </label>
+      <span id="pin">{{data['u_pin']}}</span><br>
+    </div>
+ 
+    <div class="col">
+      <label for="Mob">contact no. : </label>
+      <span id="Mob">{{data["u_mob"]}}</span><br>
+      <label for="mode">payment mode : </label>
+      <span id="mode">cash on delivery</span><br>
+    </div>
+    </div>
+        <div id ="button_placer" class="text-center">
+         
+          </div>
+  	    <div style="position: relative; width: 60%; left:15%; margin-top: 10px; align-self: center;" id="p_name_al" class="alert alert-danger" role="alert" >
+         
+        </div>
+</div>
+</body>
+</html>

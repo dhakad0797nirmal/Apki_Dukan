@@ -1,0 +1,351 @@
+{% extends "dashboard.html" %}
+{% block content %}
+<input id="search-box" style="position: relative; top: 20px; width: 50%; left: 30%;" type="text" class="form-control" placeholder="enter category 
++name" aria-label="Username" aria-describedby="basic-addon1">
+<div id="card" style="margin-top: 90px;">
+    <h1 style="text-align: center;"><b>category view</b></h1>
+{%for i in range(0,data|length)%}
+   
+   <div class="card container" style="margin-top: 60px; position:relative;">
+  
+    <div class="card-body container-fluid">
+        <img src='{{data[i]["c_img"]}}' alt="" width="200" height="200" class="img-thumbnail" style="float: left; ">
+    <div style="display: inline;">
+    <div class="display-6" style="padding-left: 25%; font-size: 2rem;"><b>{{data[i]["c_name"]}}</b></div>
+        <br> <br>
+    <div class="display-6" style="padding-left: 25%; font-size: 1.6rem;"></div>
+        <br> <br>
+    <div class="display-6 " style="padding-left: 25%; font-size: 1.3rem;">description :{{data[i]["c_description"]}} </div>
+    </div>
+    <br> <br>
+    <div style="padding-left: 20px; float: right;">
+        <button id='{{data[i]["c_id"]}}' id="edit_product_button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemCategory" onclick="edit_category(this)">
+            edit category
+          </button>
+        <button id='{{data[i]["c_id"]}}' class="btn btn-danger" onclick="delete_category(this)">Delete category</button>
+        <button id='{{data[i]["c_id"]}}' id="show_product_button" type="button" class="btn btn-success" data-toggle="modal" onclick="show_product(this)">
+            show product
+          </button>
+        </div>
+    </div>  
+    
+    
+    </div>
+    <br>
+  
+  
+   
+    {%endfor%}
+</div>
+<br>
+
+
+<button id="add_item" type="button" style="position: fixed; bottom: 20px; left: 50%;" class="btn btn-warning" data-toggle="modal" data-target="#itemCategory">
+    Add category
+  </button>
+
+<!--form-->
+<div id="action" class="">
+    <!--most important line never ever delete this code-->
+     </div>
+<div class="modal fade" id="itemCategory" tabindex="-1" role="dialog" aria-labelledby="CTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="CTitle">Add Category</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+       
+  
+        <div class="modal-body">
+            <div class="form-row">
+            
+                <div class="form-group col-md-12">
+                    <input id="uploader" type="file"></input>
+              
+                    <input style="display: none;" id="c_img" type="text">
+                    <div style="display: none;" id="c_img_al" class="alert alert-danger" role="alert" >
+    </div>
+    
+        </div>
+        </div>
+        <div class="form-row">
+            
+      <div class="form-group col-md-12">
+      <label for="category name">category name</label>
+      <input type="text" class="form-control" id="c_name"  required >
+      <div id="c_name_al" class="alert alert-danger" role="alert" ></div>
+    </div>
+    
+     </div>
+     <hr>
+     
+     <div class="form-row">
+      <div class="form-group col-md-12">
+      <label for="c_description">category description</label>
+       <textarea class="form-control rounded-0" id="c_description" rows="5"></textarea>
+       <div id="c_description_al" class="alert alert-danger" role="alert" ></div>
+    </div> </div>
+    
+  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button  onclick="add_category(this)"  type="button" class="btn btn-warning">Add Category</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+
+
+
+<script>
+    function show_product(params){
+        window.location.replace('http://127.0.0.1:5000/BataBhai12345/category/'+params.id)
+    }
+
+    $(()=>{
+        
+            $('#add_item').click(function(ev){
+                clean_up();
+                $("#action").attr('class','add');
+            });
+$("#search-box").on("input",(ev)=>{
+   var c_name= $(ev.currentTarget).val();
+  $.ajax({
+   url : 'http://157.245.254.168:5000/BataBhai12345/search_category',
+   type : 'POST',
+   data : {c_name:c_name},
+   
+   success : function(response){
+       if (response=="false"){
+         $('#card').html('<div  style="position: relative; top: 20px; width: 50%; left: 30%;" class="alert alert-danger" role="alert" >sorry no result found</div>')
+           return;
+       }
+       response= JSON.parse(response);
+       var html="";
+       response.map(function(i){
+           html+='<div class="card container" style="margin-top: 60px; position:relative;"><div class="card-body container-fluid"><img src='+i.c_img+' alt="" width="200" height="200" class="img-thumbnail" style="float: left; "><div style="display: inline;"><span class="display-6" style="padding-left: 10%; font-size: 2rem;">'+i.c_name+'</span><br> <br><span class="display-6" style="padding-left: 10%; font-size: 1.6rem;"></span><br> <br><span class="display-6 " style="padding-left: 10%; font-size: 1.3rem;"></span>category description :'+i.c_description+' </span></div><br> <br><div style="padding-left: 20px; float: right;"><button id='+i.c_id+' id="edit_product_button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#itemCategory" onclick="edit_category(this)">edit product</button>  <button id='+i.c_id+' class="btn btn-danger" onclick="delete_category(this)">Delete Product</button> <button id='+i.c_id+' id="show_product_button" type="button" class="btn btn-success" data-toggle="modal" data-target="#itemform" onclick="show_product(this)">show product</button>  </div></div>   </div><br>'
+       });
+       $('#card').html(html);
+       $('#card').hide()
+       $('#card').show()
+       },
+   });
+});
+});
+
+const clean_up=()=>{
+            $("#flash_message").hide();
+            hide_alert()
+
+            $("#action").attr('class','');
+           
+            $('#add_item').click(function(){
+                var c_name=$('#c_name').val("")
+            var c_description=$('#c_description').val('')
+            $('#c_img_al').val('')
+            });
+            
+        }
+const hide_alert=()=>{
+            var c_name_al=$('#c_name_al')
+            var c_description_al=$('#c_description_al')
+            var p_img_al=$('#c_img_al')
+            c_name_al.hide();
+            c_description_al.hide();
+            p_img_al.hide();
+        }
+
+
+function edit_category(params){
+                hide_alert();
+                var p_data=0;
+                $("#action").attr('class','edit'+' '+params.id);
+               
+                $.ajax({
+                url : 'http://127.0.0.1:5000/BataBhai12345/get_category_detail',
+                type : 'POST',
+                data : {c_id:params.id},
+                success : function(response){
+                    data=JSON.parse(response);
+                    data.map((i)=>{
+                        $('#c_name').val(i.c_name);
+                        $('#c_description').val(i.c_description);
+                        $('#c_img').val(i.c_img)
+                        
+                        
+                    });
+                    
+                    },
+                });
+          
+        }
+        
+        function add_category(params){
+            hide_alert();
+            var is_errror=false;
+            var c_name=($('#c_name').val()).trim();
+            var c_description=$('#c_description').val().trim();
+            var c_img=$('#c_img').val().trim()
+            var c_name_al=$('#c_name_al')
+            var c_img_al=$('#c_img_al');
+            var c_description_al=$('#c_description_al')
+           
+            if(c_name==""){
+                is_errror=true
+                c_name_al.show(1000);
+                c_name_al.text("required field")
+            }
+           
+            if(c_description==""){
+                is_errror=true
+                c_description_al.show(1000);
+                c_description_al.text("required filed")
+            }
+            if(c_name.length>20){
+                is_errror=true
+                c_name_al.show(1000);
+                c_name_al.text("category name need to be smaller than 20 characters")
+            }
+           
+            if(c_description.length>100){
+                is_errror=true
+                c_description_al.show(1000);
+                c_description_al.text("description need to se smaller than 20 characters")
+            }
+            
+            if(is_errror){
+            return;
+            }
+           
+            //point
+            var data= $('#uploader')[0].files[0]
+            if(data!=undefined){
+              file_name=data.name
+              filename=file_name.split(" ").join('_')
+              c_img='http://127.0.0.1:5000/static/images/product/'+filename
+            }
+            
+            if(data!=undefined)
+            {
+            var formData = new FormData();
+            formData.append('section', 'general');
+            formData.append('action', 'previewImg');
+            formData.append('file',$('#uploader')[0].files[0]);
+            $.ajax(
+                {
+                    url:"http://127.0.0.1:5000/BataBhai12345/image_upload/category",
+                    type:'POST',
+                    data:formData,
+                    contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+                    processData: false, // NEEDED, DON'T OMIT THIS
+                    cache:false
+                }
+            ).done(function(response){
+              var action= $("#action").attr('class');
+              c_id='0';
+              if (action!='add')
+              {
+                res=action.split(" ");
+                action=res[0];
+                c_id=res[1];
+              }
+            c_name=String(c_name)
+            c_description=String(c_description)
+           //here we have to vhange it we have sojme issues
+          
+            
+          
+                $.ajax({
+                url : 'http://127.0.0.1:5000/BataBhai12345/category_add',
+                type : 'POST',
+                data : {action:action,c_name:c_name,c_img:c_img,c_description:c_description,c_id:c_id},
+                success : function(response){
+                    if(action=="add")
+                    {
+                        $("#flash_message").text("record added successfully")
+                        $("#flash_message").show(1000);
+                        window.location.replace('http://127.0.0.1:5000/BataBhai12345/category');
+
+                    }
+                    else{
+                        $("#flash_message").text("record updated successfully")
+                        $("#flash_message").show(1000);
+                        window.location.replace('http://127.0.0.1:5000/BataBhai12345/category');
+                    }
+                   
+                },
+                } );
+
+              
+
+
+             }).fail(function(err){
+                alert("fail");
+            });
+          
+            }
+            else{
+
+            var action= $("#action").attr('class');
+            c_id='0';
+            if (action!='add')
+            {
+                res=action.split(" ");
+                action=res[0];
+                c_id=res[1];
+            }
+        
+
+
+
+            c_name=String(c_name)
+            c_description=String(c_description)
+           //here we have to vhange it we have sojme issues
+          
+            
+          
+                $.ajax({
+                url : 'http://127.0.0.1:5000/BataBhai12345/category_add',
+                type : 'POST',
+                data : {action:action,c_name:c_name,c_img:c_img,c_description:c_description,c_id:c_id},
+                success : function(response){
+                    if(action=="add")
+                    {
+                        $("#flash_message").text("record added successfully")
+                        $("#flash_message").show(1000);
+                        window.location.replace('http://127.0.0.1:5000/BataBhai12345/category');
+
+                    }
+                    else{
+                        $("#flash_message").text("record updated successfully")
+                        $("#flash_message").show(1000);
+                        window.location.replace('http://127.0.0.1:5000/BataBhai12345/category');
+                    }
+                   
+                },
+                } );
+                
+            }       
+        }
+        function delete_category(params){
+             $.ajax({
+               url:"http://127.0.0.1:5000/BataBhai12345/delete_category",
+               type:"POST",
+               data:{c_id:params.id},
+               success:function(response){
+                alert(response)
+                window.location.replace('http://127.0.0.1:5000/BataBhai12345/category');
+               },
+               error:function(){
+                alert("some error occured");
+               }
+             });
+          }
+</script>
+{% endblock %}

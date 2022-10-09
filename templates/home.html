@@ -1,0 +1,143 @@
+{% extends "dashboard.html" %}
+{% block content %}
+<style>
+div.fixed1{
+    position: absolute;
+    top: 19.05%;
+    left: 20.23%;
+    width: 18.32%;
+    height: 23.81%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.1);
+    
+}
+
+div.fixed2{
+    position: absolute;
+    top: 19.05%;
+    left: 65.1%;
+    width: 18.32%;
+    height: 23.81%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.1);
+}
+p.number{
+ font-weight: bold;
+}
+span.heading1{
+    position:absolute;
+    top: 15.43%;
+    left: 31.23%;
+    font-weight: bold;
+}
+span.heading2{
+    position:absolute;
+    top: 52.53%;
+    left: 31.23%;
+    font-weight: bold;
+}
+span.heading3{
+    position:absolute;
+    top: 95.6%;
+    left: 31.23%;
+    font-weight: bold;
+}
+div.fixed3{
+    position: absolute;
+    top: 60%;
+    left: 20.23%;
+    width: 18.32%;
+    height: 23.81%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.1);
+}
+div.fixed4{
+    position: absolute;
+    top: 60%;
+    left: 65.1%;
+    width: 18.32%;
+    height: 23.81%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.1);
+}
+div.fixed5{
+    position: absolute;
+    top: 100.95%;
+    left: 20.23%;
+    width: 18.32%;
+    height: 23.81%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.1);
+}
+div.fixed6{
+    position: absolute;
+    top: 100.95%;
+    left: 65.1%;
+    width: 18.32%;
+    height: 23.81%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.1);
+}
+footer.ftpos{
+  position: absolute;
+  top: 130%;
+  height: 6.2% ;
+  width: 100%;
+  color: aliceblue;
+  text-align: center;
+  font-weight: bold;
+}
+
+    </style>
+   <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        
+        PANKAJ STORES
+      </a>
+    </div>
+  </nav>
+       <span class="heading1"></span>
+    <div class="fixed1 card">
+        <div class="card-body">
+            <h5 >Total products</h5><hr>
+            <p class="number" style="text-align: center;">{{data['p_total']}}</p><hr>
+            
+        </div> 
+    </div>
+    <div style="display: inline;" class="card fixed2">
+       <div class="card-body">
+           <h5 class="card-title" >Pending Orders</h5><hr>
+           <p class="number" style="text-align: center;">{{data['o_p_total']}}</p><hr>
+          
+       </div> </div>
+      
+    <div   class="fixed3 card">
+        <div class="card-body">
+            <h5 class="card-title">Accepted Orders</h5><hr>
+            <p class="number" style="text-align: center;">{{data['o_a_total']}}</p><hr>
+            
+        </div> 
+    </div>
+    <div style="display: inline;" class="fixed4 card" >
+       <div class="card-body">
+           <h5 class="card-title" >Shipped Orders</h5><hr>
+           <p class="number" style="text-align: center;">{{data['o_s_total']}}</p><hr>
+           
+       </div> </div>
+      
+       <div style="display: inline;" class="fixed5 card" >
+        <div class="card-body">
+            <h5 class="card-title" style="font-size:90%;">Total users</h5><hr>
+            <p class="number" style="text-align: center;">{{data['u_total']}}</p><hr>
+            
+        </div> </div>
+        <div style="display: inline;" class="fixed6 card" >
+          <div class="card-body">
+              <h5 class="card-title" style="font-size:90%;">Total sales</h5><hr>
+              <p class="number" style="text-align: center;">{{data['total_sale']}}</p><hr>
+          
+          </div> </div>
+        
+ 
+<script>
+  $(()=>{
+    $(".card-body").hide()
+    $(".card-body").show(1000)
+  });
+</script>
+{% endblock %}

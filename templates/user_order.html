@@ -1,0 +1,65 @@
+{% extends "header.html" %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+
+
+.mt-50 {
+    margin-top: 50px
+}
+
+.mb-50 {
+    margin-bottom: 50px
+}
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+}
+.card
+{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+margin-top:10px;
+}
+.media-body
+{
+padding:20px;}
+</style>
+</head>
+<body> 
+<div class="container mt-50 md-50">
+<div class="row">
+    {%for i in range(0,data|length)%}
+<div class="col-md-4">
+                  <div class="card">
+                   
+                        <div class="media-body order-2 order-lg-1">
+                            <h5 class="mt-0 font-weight-bold mb-2" style="color: rgb(22, 22, 87);">Pankaj's Kirana</h5>
+                             <div style="margin-top:3px"><lable>Order_id : </lable><span><b>#{{data[i]['o_id']}}</b></span></div>
+                            <div class="row d-flex  mt-1">
+
+                                <div class="col"><span class="font-weight-bold my-2" style="font-style: italic; text-decoration:black;">&#8377;{{data[i]['o_total']}}</span></div>
+                                <div class="col" style="text-align:right"><span style="color: rgb(231, 50, 50)" class="font-weight-bold "><span class="dot"></span><span>{{data[i]['o_status']}}</span></span></div>
+                             </div> 
+                              <div class="row d-flex  mt-1">
+                                  <div class="col"><span class="font-weight-bold my-2">{{data[i]['item_count']}} items</span></div>
+                                <div class="col" style="text-align:right"><span  class="font-weight-bold">{{data[i]['o_date']}}</span></div>
+                             </div>
+                           <div style="text-align:center"><a href="user_account_order/{{data[i]['o_id']}}"><button class="btn-primary" >order detail</button></a></div>
+                        </div>      
+            </div></div>
+
+{%endfor%}
+
+   </div></div>
+</body>
+</html>
+
+
+{%endblock%}

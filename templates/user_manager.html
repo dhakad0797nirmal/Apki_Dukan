@@ -1,0 +1,15 @@
+{% extends "dashboard.html" %}
+{% block content %}
+<div style="margin-top: 90px; margin-left:20px ;padding: 20px; padding-top: 20px;">
+{%for i in range(0,data|length)%}
+<div class="w3-card" style="display: inline-block; ">
+    <h5 class="card-header">User Information</h5>
+    <div class="card-body" >
+      <h5 class="card-title">Name :{{data[i]['u_name']}}</h5>
+      <hr>
+      <p class="card-text">Phone Number : {{data[i]['u_mob']}}</p>
+    </div>
+  </div>
+  {%endfor%}
+</div>
+ {%endblock%}  

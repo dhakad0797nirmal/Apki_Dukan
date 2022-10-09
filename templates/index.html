@@ -1,0 +1,311 @@
+{% extends "header.html" %}
+{% block content %}
+
+<style>
+#testimonials
+{
+  padding:7% 15%;
+  text-align: center;
+}
+h2
+{
+  font-family: "Montserrat-Bold";
+  font-size: 3rem;
+  line-height: 1.5;
+}
+.testimonial-image{
+  width: 100%;
+  margin:20px;
+}
+#features
+{
+  padding: 4% 10%;
+  background-color: white;
+  position:relative;
+  z-index: 1;
+}
+.testimonial-text
+{
+  color: aliceblue;
+}
+.feature-box
+{
+  text-align: center;
+  padding: 5%;
+}
+p{
+  color: grey;
+}
+#pricing{
+  padding: 2%;
+  text-align: center;
+}
+.pricing-column
+{
+  padding: 3% 2%;
+}
+#footer{
+  padding: 7% 7%;
+  text-align: center;
+  background-color: black;
+}
+.social-icon
+{
+  margin:4% 2%;
+  color: aliceblue;
+}
+</style>
+  <div id="intro">
+  </div>
+    <!--Section: Block Content-->
+    <section>
+
+        <!--Carousel Wrapper-->
+        <div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">
+          <!--Indicators-->
+          <ol class="carousel-indicators">
+            <li data-target="#carousel-example-2" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-2" data-slide-to="1"></li>
+            <li data-target="#carousel-example-2" data-slide-to="2"></li>
+          </ol>
+          <!--/Indicators-->
+          <!--Slides-->
+          <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+              <div class="view">
+                <img class="d-block w-100" src="\static\sonder-quest-5ze1ouvzSM8-unsplash.jpg"
+                  alt="First slide">
+                <a href="#!">
+                  <div class="mask rgba-black-light"></div>
+                </a>
+              </div>
+              <div class="carousel-caption">
+                <h3 class="h3-responsive">we offer best of all</h3>
+                <p>Genuine products</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <!--Mask color-->
+              <div class="view">
+                <img class="d-block w-100" src="\static\fikri-rasyid-ezeC8-clZSs-unsplash.jpg"
+                  alt="Second slide">
+                <a href="#!">
+                  <div class="mask rgba-black-light"></div>
+                </a>
+              </div>
+              <div class="carousel-caption">
+                <h3 class="h3-responsive">Day-to-Day utilities</h3>
+                <p>All kind of grocery items</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <!--Mask color-->
+              <div class="view">
+                <img class="d-block w-100" src="\static\nico-smit-PTv-B97DHNI-unsplash.jpg"
+                  alt="Third slide">
+                <a href="#!">
+                  <div class="mask rgba-black-light"></div>
+                </a>
+              </div>
+              <div class="carousel-caption">
+                <h3 class="h3-responsive" >All products at cheaper rates</h3>
+                <p>free home delivery</p>
+              </div>
+            </div>
+          </div>
+          <!--/Slides-->
+          <!--Controls-->
+          <a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+          <!--/Controls-->
+        </div>
+        <!--/Carousel Wrapper-->
+      
+      </section>
+
+
+ 
+
+  <h2 class="section-heading" style="text-align: center; size: 5%;">Delivered By 7:00 AM </h2>
+
+<!--product detail section-->
+
+  <style>
+    div.scrollmenu {
+      overflow: auto;
+      white-space: nowrap;
+    }
+    
+    div.scrollmenu a {
+      display: inline-block;
+      color: white;
+      text-align: left;
+      padding: 14px;
+      text-decoration: none;
+    }
+    
+    div.scrollmenu a:hover {
+      background-color: #777;
+    }
+    .image{
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 250px;
+        height: 250px;
+     
+    }
+    .image:hover{
+        opacity: .5;
+    }
+   
+#qwe::after {
+	content: "";
+	width: 100px;
+	position: absolute;
+	margin: 0 auto;
+	height: 4px;
+	border-radius: 1px;
+	background: #7ac400;
+	left: 0;
+	right: 0;
+	bottom: -20px;
+}
+    </style>
+
+{%for i in range(0,data|length)%}
+
+<hr>
+<h2 id="qwe" style="	color: #000;
+font-size: 26px;
+font-weight: 300;
+text-align: center;
+text-transform: uppercase;
+position: relative;
+margin: 30px 0 60px;"> <b>{{data[i]['c_name']}}</b></h2>
+<a href="product_detail/{{data[i]['c_id']}}">
+  <button style="margin-left: 75%;margin-bottom: 3%;" type="button" class="btn btn-success" >view more</button>
+  </a>
+
+<div class="scrollmenu" style="margin-left: 10%;">
+    {%for j in range(0,data[i]['c_item']|length)%}
+    
+    <div class="w3-container" style="display: inline-block;" >
+        <div class="w3-card-4" style="border-radius: 30px;">
+         <a style="text-decoration: underline;" href="/search_product/{{data[i]['c_item'][j]['p_id']}}"> <img class="image" src="{{data[i]['c_item'][j]['p_img']}}"></a>
+          <div class="w3-container w3-center">
+          <h3 style="text-align: left; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; text-transform: capitalize;font-weight: bold;">{{data[i]['c_item'][j]['p_name']}}</h3>
+          <p  style="font-style: normal; font-weight: lighter; text-align: left; font-size:small;">per {{data[i]['c_item'][j]['p_quantity']}}</p>
+          <p  style="font-style: italic; font-weight:bold; text-align: left;">&#8377 {{data[i]['c_item'][j]['p_price']}}</p>
+         
+          <div class="quantity" id="{{data[i]['c_item'][j]['p_id']}}">
+            
+              <input id="input_contain"type="button" style="width: 5rem;"class="btn btn-danger" value="Add">
+              
+          </div>
+          <div id="buy{{data[i]['c_item'][j]['p_id']}}">
+
+           </div>
+          </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+<br>
+{%endfor%}
+
+
+
+<h2 class="section-heading" style="text-align: center; margin-top: 2%;">Reasons you should shop with us.</h2>
+
+  <section class="white-section" id="features">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-4 col-md-12 feature-box">
+          <i class="fas fa-check-circle fa-4x icon"></i>
+          <h3 class="feature-title">Easy to use.</h3>
+          <p>Easy to order and highly reliable.</p>
+        </div>
+
+        <div class="col-lg-4 col-md-12 feature-box">
+          <i class="fas fa-money-bill-wave fa-4x icon"></i>
+          <h3 class="feature-title">Payment Option</h3>
+          <p>Cash on Delivery.</p>
+        </div>
+
+        <div class="col-lg-4 col-md-12 feature-box">
+          <i class="fas fa-user-shield fa-4x icon"></i>
+          <h3 class="feature-title">Safe and Secure</h3>
+          <p>All Safety Protocols are followed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="white-section" id="pricing">
+
+    <h2 class="section-heading">We have everything you need.</h2>
+    <div class="row">
+      <div class="pricing-column col-lg-4 col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3>Become a member</h3>
+          </div>
+
+          <div class="card-body">
+            <h2 class="price-text">Free</h2>
+            <p>Safe and Fast Deliveries</p>
+            <p>Order cancellation without fine</p>
+            <p>Wide range of products</p>
+            <a href="/login"><button type="button" class="btn btn-dark btn-block">Sign Up</button></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pricing-column col-lg-4 col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3>Categories</h3>
+          </div>
+
+          <div class="card-body">
+            <h2 class="price-text">Low Price</h2>
+            <p>Daily Needs</p>
+            <p>Worship Material</p>
+            <p>Grocery Items</p>
+           <a href="/category"><button type="button" class="btn btn-dark btn-block">Categoric View </button> </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pricing-column col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h3>Products</h3>
+          </div>
+
+          <div class="card-body">
+            <h2 class="price-text">Get it All</h2>
+            <p>Top Quality Products</p>
+            <p>Genuine Products</p>
+            <p>Safe & Reliable</p>
+            <a href="/all_product"><button type="button"  class="btn btn-dark btn-block">Products </button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  
+
+
+  {%endblock%}
+  

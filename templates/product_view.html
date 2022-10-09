@@ -1,0 +1,92 @@
+{% extends "header.html" %}
+{% block content %}
+
+        
+   
+        <style>
+            div.scrollmenu {
+              overflow: auto;
+              white-space: nowrap;
+            }
+            
+            div.scrollmenu a {
+              display: inline-block;
+              color: white;
+              text-align: left;
+              padding: 14px;
+              text-decoration: none;
+            }
+            
+            div.scrollmenu a:hover {
+              background-color: #777;
+            }
+            .image{
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                width: 250px;
+                height: 250px;
+             
+            }
+            .image:hover{
+                opacity: .5;
+            }
+           
+        #qwe::after {
+            content: "";
+            width: 100px;
+            position: absolute;
+            margin: 0 auto;
+            height: 4px;
+            border-radius: 1px;
+            background: #7ac400;
+            left: 0;
+            right: 0;
+            bottom: -20px;
+        }
+            </style>
+        
+        {%for i in range(0,data|length)%}
+        
+        <hr>
+        <h2 id="qwe" style="	color: #000;
+        font-size: 26px;
+        font-weight: 300;
+        text-align: center;
+        text-transform: uppercase;
+        position: relative;
+        margin: 30px 0 60px;"> <b>{{data[i]['c_name']}}</b></h2>
+        <a href="product_detail/{{data[i]['c_id']}}">
+        <button style="margin-left: 75%;margin-bottom: 3%;" type="button" class="btn btn-success" >view more</button>
+        </a>
+        <div class="scrollmenu" style="margin-left: 10%; ">
+            
+            {%for j in range(0,data[i]['c_item']|length)%}
+            
+            <div class="w3-container" style="display: inline-block;" style="margin-top: 10%;">
+                <div class="w3-card-4" style="border-radius: 30px;">
+                 <a href="/search_product/{{data[i]['c_item'][j]['p_id']}}"> <img class="image" src="{{data[i]['c_item'][j]['p_img']}}"></a>
+                  <div class="w3-container w3-center">
+                  <h3 style="text-align: left; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; text-transform: capitalize;font-weight: bold;">{{data[i]['c_item'][j]['p_name']}}</h3>
+                  <p  style="font-style: normal; font-weight: lighter; text-align: left; font-size:small;">per {{data[i]['c_item'][j]['p_quantity']}}</p>
+                  <p  style="font-style: italic; font-weight:bold; text-align: left;">&#8377 {{data[i]['c_item'][j]['p_price']}}</p>
+                 
+                  <div class="quantity" id="{{data[i]['c_item'][j]['p_id']}}">
+                    
+                      <input id="input_contain"type="button" style="width: 5rem;"class="btn btn-danger" value="Add">
+                      
+                  </div>
+                  <div id="buy{{data[i]['c_item'][j]['p_id']}}">
+        
+                   </div>
+                  </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+        <br>
+        {%endfor%}
+        
+    
+    <script src="static/js/add_update_cart.js"></script>
+
+{%endblock%}
